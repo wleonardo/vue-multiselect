@@ -35,7 +35,7 @@ API changes:
 ## Install & basic usage
 
 ``` bash
-npm install vue-multiselect
+npm install wleonardo/vue-multiselect
 ```
 
 ``` html
@@ -43,7 +43,7 @@ npm install vue-multiselect
   <div>
     <multiselect
       :selected="selected"
-      :options="options"
+      :options.sync="options"
       @update="updateSelected">
     </multiselect>
   </div>
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     updateSelected (newSelected) {
-      this.selected = newSelected
+      console.log(newSelected)
     }
   }
 }
@@ -95,7 +95,7 @@ in jade-lang/pug-lang
 ``` jade
 multiselect(
   :options="source",
-  :selected="value",
+  :selected.sync="value",
   :searchable="false",
   :close-on-select="false",
   :allow-empty="false",
@@ -110,7 +110,7 @@ multiselect(
 ``` jade
 multiselect(
   :options="source",
-  :selected="value",
+  :selected.sync="value",
   :close-on-select="true",
   @update="updateValue",
   placeholder="Select one",
@@ -123,7 +123,7 @@ multiselect(
 ```jade
 multiselect(
   :options="source",
-  :selected="multiValue",
+  :selected.sync="multiValue",
   :multiple="true",
   :close-on-select="true",
   @update="updateMultiValue",
@@ -138,10 +138,10 @@ with `@tag` event
 ```jade
 multiselect(
   :options="taggingOptions",
-  :selected="taggingSelected",
+  :selected.sync="taggingSelected",
   :multiple="true",
   :taggable="true",
-  @tag="addTag",
+  :tag="addTag",
   @update="updateSelectedTagging",
   tag-placeholder="Add this as new tag",
   placeholder="Type to search or add tag",
@@ -156,8 +156,7 @@ addTag (newTag) {
     name: newTag,
     code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
   }
-  this.taggingOptions.push(tag)
-  this.taggingSelected.push(tag)
+  return tag
 },
 ```
 
@@ -166,7 +165,7 @@ Using partial API
 ```jade
 multiselect(
   :options="styleList",
-  :selected="selectedStyle",
+  :selected.sync="selectedStyle",
   :option-height="130",
   :custom-label="styleLabel",
   @update="updateSelectedStyle",
@@ -187,7 +186,7 @@ methods: {
     return `${title} – ${desc}`
   },
   updateSelectedStyle (style) {
-    this.selectedStyle = style
+    console.log(style)
   }
 }
 ```
@@ -498,6 +497,11 @@ props: {
   disabled: {
     type: Boolean,
     default: false
+  },
+  tag: {
+    type: Function,
+    default: () => {
+    }
   }
 }
 ```
@@ -529,3 +533,5 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 [MIT](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2016 Damian Dulisz
+
+
